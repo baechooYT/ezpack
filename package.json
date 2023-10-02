@@ -1,0 +1,31 @@
+{
+  "dependencies": {
+    "axios": "^1.5.1",
+    "commander": "^11.0.0",
+    "moment": "^2.29.4",
+    "typescript": "^5.2.2"
+  },
+  "bin": {
+    "ezpack": "build/index.js"
+  },
+  "devDependencies": {
+    "@types/node": "^20.8.0"
+  },
+  "name": "ezpack",
+  "version": "1.0.0",
+  "description": "Easiest way to pack minecraft modpack",
+  "main": "/build/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/baechooYT/ezpack.git"
+  },
+  "author": "holyb",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/baechooYT/ezpack/issues"
+  },
+  "homepage": "https://github.com/baechooYT/ezpack#readme"
+}
