@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "archiver": "^6.0.1",
     "axios": "^1.5.1",
     "commander": "^11.0.0",
     "moment": "^2.29.4",
@@ -9,10 +10,11 @@
     "ezpack": "build/index.js"
   },
   "devDependencies": {
+    "@types/archiver": "^5.3.3",
     "@types/node": "^20.8.0"
   },
   "name": "mc-ezpack",
-  "version": "0.0.2",
+  "version": "1.0.0",
   "description": "Easiest way to pack minecraft modpack",
   "main": "./build/index.js",
   "scripts": {

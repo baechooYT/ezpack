@@ -8,12 +8,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BaseMirror = void 0;
-const moment_1 = __importDefault(require("moment"));
+const BaseModFile_1 = require("../interfaces/BaseModFile");
 class BaseMirror {
     constructor() {
         this.name = "Example";
@@ -21,7 +18,7 @@ class BaseMirror {
     getModBySlug(slug) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                return { mirror: this, slug: "", idFromMirror: "", links: { sourceURL: "" }, latestFileDate: (0, moment_1.default)() };
+                return { mirror: this, slug: "", idFromMirror: "", latestFile: new BaseModFile_1.BaseModFile() };
             }
             catch (e) {
                 console.log(e);
@@ -31,6 +28,16 @@ class BaseMirror {
     }
     getUrlBySlug(slug) {
         return "https://example.com/" + slug;
+    }
+    getModFileByGameVersion(game_version, modId, modLoader) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return new BaseModFile_1.BaseModFile();
+        });
+    }
+    convertFromEzpack(manifest, mods, path, mcVersion) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return "";
+        });
     }
 }
 exports.BaseMirror = BaseMirror;

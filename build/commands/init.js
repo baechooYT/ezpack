@@ -32,10 +32,12 @@ module.exports = {
             const name = yield input("Please type the name of modpack:\n");
             const author = yield input("Please type the author of modpack:\n");
             const version = yield input("Please type the version of modpack:\n");
+            // const modloader = await input("Please type the modloader of modpack (fabric/forge):\n")
             const manifest = {
                 name: name,
                 author: author,
-                version: version
+                version: version,
+                modloader: "fabric"
             };
             yield fs_1.default.writeFileSync('manifest.json', JSON.stringify(manifest));
             yield fs_1.default.writeFileSync('mods.json', "[]");
