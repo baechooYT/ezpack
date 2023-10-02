@@ -1,4 +1,6 @@
-./build
-./node_modules
+build/**
+testing/**
+node_modules/**
+!node_modules/**/node_modules
 manifest.json
 mods.json

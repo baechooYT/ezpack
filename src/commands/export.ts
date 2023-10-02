@@ -1,3 +1,5 @@
+import {BaseMirror} from "../classes/BaseMirror";
+
 const readline = require('readline');
 import fs from 'fs'
 
@@ -15,20 +17,21 @@ function input(query: string) {
 
 
 module.exports = {
-    name: "init",
-    description: "Initalize an ezpack project.",
-    action: async function (){
-        const name = await input("Please type the name of modpack:\n")
-        const author = await input("Please type the author of modpack:\n")
-        const version = await input("Please type the version of modpack:\n")
+    name: "export",
+    description: "Exports an ezpack project to other formats.",
+    action: async function (program: any){
 
-        const manifest = {
-            name: name,
-            author: author,
-            version: version
+        const startTime = Date.now()
+        const mirrorClass = require(__dirname + "/../mirrors/" + program.args[1])
+        const mirror = new mirrorClass()
+
+        if (!fs.existsSync("./exports")){
+            fs.mkdirSync("./exports")
         }
 
-        await fs.writeFileSync('manifest.json', JSON.stringify(manifest))
-        await fs.writeFileSync('mods.json', "[]")
+        const savedPath = await mirror.convertFromEzpack(JSON.parse(fs.readFileSync("./manifest.json", 'utf-8')), JSON.parse(fs.readFileSync("./mods.json", 'utf-8')), "./exports", program.args[2])
+
+        console.log("Exported to: "+savedPath)
+        console.log(`Exported successfully! Took: ${(Date.now()-startTime)/1000}s`)
     }
 }

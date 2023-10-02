@@ -21,11 +21,13 @@ module.exports = {
         const name = await input("Please type the name of modpack:\n")
         const author = await input("Please type the author of modpack:\n")
         const version = await input("Please type the version of modpack:\n")
+        // const modloader = await input("Please type the modloader of modpack (fabric/forge):\n")
 
         const manifest = {
             name: name,
             author: author,
-            version: version
+            version: version,
+            modloader: "fabric"
         }
 
         await fs.writeFileSync('manifest.json', JSON.stringify(manifest))

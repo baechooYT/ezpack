@@ -1,9 +1,9 @@
 import axios from "axios";
-import moment from "moment";
 import readline from "readline"
 import fs from "fs"
 import {BaseMirror} from "../classes/BaseMirror";
 import {BaseMod} from "../interfaces/BaseMod";
+import moment from "moment";
 
 function input(query: string) {
     const rl = readline.createInterface({
@@ -18,20 +18,6 @@ function input(query: string) {
 }
 async function checkRedirect(url: string) {
     return (await axios.get(url)).request.res.responseUrl
-}
-
-function compareValues(obj: object): boolean {
-    let values = Object.values(obj);
-    if (values.length === 0) {
-        return true;
-    }
-    let first = values[0];
-    for (let i = 1; i < values.length; i++) {
-        if (values[i] !== first) {
-            return false;
-        }
-    }
-    return true;
 }
 
 function compareTimestamps(obj: {[key: string]: moment.Moment}): string[] {
@@ -52,12 +38,13 @@ function compareTimestamps(obj: {[key: string]: moment.Moment}): string[] {
 
 module.exports = {
     name: "add",
-    description: "adds a minecraft mod to modpack.",
+    description: "Adds a minecraft mod to modpack.",
     action: async function (program: any){
         const startTime = Date.now();
 
         const modsFile = JSON.parse(await fs.readFileSync("./mods.json", 'utf-8'))
 
+        // checks duplicate and deletes it
         let i=0
         for (let mod of modsFile) {
             if (mod.slug == program.args[1]) {
@@ -66,6 +53,7 @@ module.exports = {
             i++
         }
 
+        // pushes mirrors in to mirrors array
         const mirrors: BaseMirror[] = []
         const mods: BaseMod[] = []
         await fs.readdirSync(__dirname+"/../mirrors").forEach(async function (f){
@@ -74,70 +62,40 @@ module.exports = {
             mirrors.push(new mirror())
         })
 
-        const notUsableMirrors = []
-        const sourceUrls: {[index: string]:string} = {}
+        const hashes: {[index: string]: string} = {}
         for (const v of mirrors) {
             const mod = await v.getModBySlug(program.args[1])
 
             if (!mod){
-                console.log('Cannot find "'+program.args[1]+'" in '+v.name)
-                notUsableMirrors.push(v)
-
                 continue;
             }
 
-            sourceUrls[v.name] = (await checkRedirect(mod.links.sourceURL)).toLowerCase()
             mods.push(mod)
+            hashes[mod.latestFile.hashes.sha1] = v.name
         }
 
-        if (compareValues(sourceUrls) == false) {
-            console.log("Is these mods are same mods?. (Y/N)")
-            for (const mod of mods) {
-                console.log(mod.mirror.getUrlBySlug(mod.slug))
-            }
-
-            let i = await input("")
-
-            if (i=="Y"){
-                console.log("OK, Ignoring warning..")
-            }else{
-                const newUrls = {}
-                while (true){
-                    const newUrl = await input("Please correct the wrong mod url and type here. (Type 'end' to end)\n")
-
-                    if (newUrl == 'end'){
-                        break
-                    }else{
-                        // TODO: Add mod correction - detect mirror site
-                    }
-                }
-
-
-                // TODO: Add mod correction
-            }
-        }
-
-        // TODO: Compare by versions not timestamps
-        let timestamps: {[key: string]: moment.Moment} = {}
-        for (let mod of mods){
-            timestamps[mod.mirror.name] = moment(mod.latestFileDate)
-        }
-        let removedMirrors = compareTimestamps(timestamps)
-
-        for (let removedMirror of removedMirrors){
-            let i = 0
+        if (Object.keys(hashes).length != 1){
+            let timestamps: {[key: string]: moment.Moment} = {}
             for (let mod of mods){
-                if (mod.mirror.name == removedMirror){
-                    mods.splice(i, 1)
-
-                    console.log("!! Looks like mod has discontinued uploading to "+mod.mirror.name+". !!")
-                }
-                i++
+                timestamps[mod.mirror.name] = moment(mod.latestFile.date)
             }
-        }
+            let removedMirrors = compareTimestamps(timestamps)
 
-        if (removedMirrors.length >= 1){
-            console.log("!! Modpack will be fine, but some features will not work in launcher !!")
+            for (let removedMirror of removedMirrors){
+                let i = 0
+                for (let mod of mods){
+                    if (mod.mirror.name == removedMirror){
+                        mods.splice(i, 1)
+
+                        console.log("!! Looks like mod has discontinued uploading to "+mod.mirror.name+". !!")
+                    }
+                    i++
+                }
+            }
+
+            if (removedMirrors.length >= 1){
+                console.log("!! Modpack will be fine, but some features will not work in launcher !!")
+            }
         }
 
         const parsedMods: {[index: string]:any} = {}

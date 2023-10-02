@@ -14,7 +14,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const BaseMirror_1 = require("../classes/BaseMirror");
 const axios_1 = __importDefault(require("axios"));
-const moment_1 = __importDefault(require("moment"));
+const BaseModFile_1 = require("../interfaces/BaseModFile");
+const moment_1 = __importDefault(require("moment/moment"));
 module.exports = class Modrinth extends BaseMirror_1.BaseMirror {
     constructor() {
         super(...arguments);
@@ -27,16 +28,17 @@ module.exports = class Modrinth extends BaseMirror_1.BaseMirror {
                 if (!Mod) {
                     return undefined;
                 }
-                // Getting latest file date
-                const VersionData = (yield axios_1.default.get("https://api.modrinth.com/v2/version/" + Mod.versions[Mod.versions.length - 1])).data;
+                // Getting latest file
+                const VersionData = (yield axios_1.default.get(`https://api.modrinth.com/v2/project/${slug}/version/${Mod.versions[Mod.versions.length - 1]}`)).data;
+                const latestFile = new BaseModFile_1.BaseModFile();
+                latestFile.hashes.sha1 = VersionData.files[0].hashes.sha1;
+                latestFile.date = (0, moment_1.default)(VersionData.date_published);
+                latestFile.downloadURL = VersionData.files[0].url;
                 return {
                     slug: slug,
                     mirror: this,
                     idFromMirror: Mod.id,
-                    links: {
-                        sourceURL: Mod["source_url"] ? Mod["source_url"] : ""
-                    },
-                    latestFileDate: (0, moment_1.default)(VersionData.date_published)
+                    latestFile: latestFile
                 };
             }
             catch (e) {
@@ -45,7 +47,28 @@ module.exports = class Modrinth extends BaseMirror_1.BaseMirror {
             }
         });
     }
+    getModFileByGameVersion(game_version, modId, modLoader) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const versions = (yield axios_1.default.get(`https://api.modrinth.com/v2/project/${modId}/version`, {})).data;
+            for (let version of versions) {
+                if (version.game_versions.includes(game_version) && version.loaders.includes(modLoader)) {
+                    const modFile = new BaseModFile_1.BaseModFile();
+                    modFile.date = (0, moment_1.default)(version.date_published);
+                    modFile.hashes.sha1 = version.files[0].hashes.sha1;
+                    modFile.downloadURL = version.files[0].url;
+                    return modFile;
+                }
+            }
+            return undefined;
+        });
+    }
     getUrlBySlug(slug) {
         return "https://modrinth.com/mod/" + slug;
+    }
+    convertFromEzpack(manifest, mods, path, mcVersion) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const filePath = `${path}/${this.name}-${mcVersion}.mrpack`;
+            return filePath;
+        });
     }
 };
