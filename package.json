@@ -11,10 +11,10 @@
   "devDependencies": {
     "@types/node": "^20.8.0"
   },
-  "name": "ezpack",
-  "version": "1.0.0",
+  "name": "mc-ezpack",
+  "version": "0.0.2",
   "description": "Easiest way to pack minecraft modpack",
-  "main": "/build/index.js",
+  "main": "./build/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
