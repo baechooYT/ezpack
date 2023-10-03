@@ -39,6 +39,7 @@ function compareTimestamps(obj: {[key: string]: moment.Moment}): string[] {
 module.exports = {
     name: "add",
     description: "Adds a minecraft mod to modpack.",
+    args: {"<modSlug>": "Slug of mod. Can be found in mod's mirror page."},
     action: async function (program: any){
         const startTime = Date.now();
 

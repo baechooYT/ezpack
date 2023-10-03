@@ -34,10 +34,5 @@ class BaseMirror {
             return new BaseModFile_1.BaseModFile();
         });
     }
-    convertFromEzpack(manifest, mods, path, mcVersion) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return "";
-        });
-    }
 }
 exports.BaseMirror = BaseMirror;

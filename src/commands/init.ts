@@ -17,6 +17,7 @@ function input(query: string) {
 module.exports = {
     name: "init",
     description: "Initalize an ezpack project.",
+    args: {},
     action: async function (){
         const name = await input("Please type the name of modpack:\n")
         const author = await input("Please type the author of modpack:\n")

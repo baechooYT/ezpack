@@ -27,6 +27,7 @@ function input(query) {
 module.exports = {
     name: "init",
     description: "Initalize an ezpack project.",
+    args: {},
     action: function () {
         return __awaiter(this, void 0, void 0, function* () {
             const name = yield input("Please type the name of modpack:\n");

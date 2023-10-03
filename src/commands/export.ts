@@ -19,17 +19,18 @@ function input(query: string) {
 module.exports = {
     name: "export",
     description: "Exports an ezpack project to other formats.",
+    args: {"<modpackFormat>": "Format of mod (ex: CurseForge, Modrinth, ModsZip)", "<mcVersion>": "Target version of exported modpack (ex: 1.20.2)"},
     action: async function (program: any){
 
         const startTime = Date.now()
-        const mirrorClass = require(__dirname + "/../mirrors/" + program.args[1])
-        const mirror = new mirrorClass()
+        const modpackFormatClass = require(__dirname + "/../modpackFormats/" + program.args[1])
+        const modpackFormat = new modpackFormatClass()
 
         if (!fs.existsSync("./exports")){
             fs.mkdirSync("./exports")
         }
 
-        const savedPath = await mirror.convertFromEzpack(JSON.parse(fs.readFileSync("./manifest.json", 'utf-8')), JSON.parse(fs.readFileSync("./mods.json", 'utf-8')), "./exports", program.args[2])
+        const savedPath = await modpackFormat.convertFromEzpack(JSON.parse(fs.readFileSync("./manifest.json", 'utf-8')), JSON.parse(fs.readFileSync("./mods.json", 'utf-8')), "./exports", program.args[2])
 
         console.log("Exported to: "+savedPath)
         console.log(`Exported successfully! Took: ${(Date.now()-startTime)/1000}s`)

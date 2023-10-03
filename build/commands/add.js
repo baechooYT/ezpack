@@ -46,6 +46,7 @@ function compareTimestamps(obj) {
 module.exports = {
     name: "add",
     description: "Adds a minecraft mod to modpack.",
+    args: { "<modSlug>": "Slug of mod. Can be found in mod's mirror page." },
     action: function (program) {
         return __awaiter(this, void 0, void 0, function* () {
             const startTime = Date.now();

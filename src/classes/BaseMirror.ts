@@ -22,8 +22,4 @@ export class BaseMirror {
     async getModFileByGameVersion(game_version: string, modId: string, modLoader: string): Promise<BaseModFile | undefined>{
         return new BaseModFile()
     }
-
-    async convertFromEzpack(manifest: {[p: string]: any}, mods: {[p: string]: {[p: string]: any}}[], path: string, mcVersion: string): Promise<string>{
-        return ""
-    }
 }

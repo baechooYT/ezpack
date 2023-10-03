@@ -15,15 +15,18 @@ const fs = require("fs");
 program
     .name("ezpack")
     .description("Easiest way to pack a minecraft modpacks")
-    .version("1.0.2");
+    .version("1.0.3");
 fs.readdirSync(__dirname + "/commands/").forEach((file) => {
     const command = require(__dirname + "/commands/" + file);
-    program.command(command.name)
+    let newCommand = program.command(command.name)
         .description(command.description)
         .action(function () {
         return __awaiter(this, void 0, void 0, function* () {
             yield command.action(program);
         });
     });
+    for (let [key, value] of Object.entries(command.args)) {
+        newCommand.argument(key, value);
+    }
 });
 program.parse();

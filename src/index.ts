@@ -12,13 +12,15 @@ program
 fs.readdirSync(__dirname+"/commands/").forEach((file: string) => {
     const command = require(__dirname+"/commands/"+file)
 
-    program.command(command.name)
+    let newCommand = program.command(command.name)
         .description(command.description)
         .action(async function (){
             await command.action(program)
         });
 
-
+    for (let [key, value] of Object.entries(command.args)){
+        newCommand.argument(key, value)
+    }
 })
 
 program.parse();
