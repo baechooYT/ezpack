@@ -132,7 +132,7 @@ module.exports = class CurseForge extends BaseMirror_1.BaseMirror {
                     modList += `<li><a href="https://www.curseforge.com/minecraft/mc-mods/${mirrorModInfo.slug}">${mirrorModInfo.name} (by ${mirrorModInfo.authors[0].name})</a></li>\n`;
                     cfManifest.files.push({
                         "projectID": modInfo.id,
-                        "fileID": this.getModFileByGameVersion(mcVersion, modInfo.id, 'fabric'),
+                        "fileID": (yield this.getModFileByGameVersion(mcVersion, modInfo.id, 'fabric')).id,
                         "required": true,
                     });
                 }
