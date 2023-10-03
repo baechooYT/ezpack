@@ -7,14 +7,14 @@
     "typescript": "^5.2.2"
   },
   "bin": {
-    "ezpack": "build/index.js"
+    "ezpack": "/build/index.js"
   },
   "devDependencies": {
     "@types/archiver": "^5.3.3",
     "@types/node": "^20.8.0"
   },
   "name": "mc-ezpack",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Easiest way to pack minecraft modpack",
   "main": "./build/index.js",
   "scripts": {
