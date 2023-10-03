@@ -79,7 +79,7 @@ module.exports = {
             if (Object.keys(hashes).length != 1) {
                 let timestamps = {};
                 for (let mod of mods) {
-                    timestamps[mod.mirror.name] = (0, moment_1.default)(mod.latestFile.date);
+                    timestamps[mod.mirror.name] = (0, moment_1.default)(mod.latestFile.date).startOf('day');
                 }
                 let removedMirrors = compareTimestamps(timestamps);
                 for (let removedMirror of removedMirrors) {

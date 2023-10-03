@@ -77,7 +77,7 @@ module.exports = {
         if (Object.keys(hashes).length != 1){
             let timestamps: {[key: string]: moment.Moment} = {}
             for (let mod of mods){
-                timestamps[mod.mirror.name] = moment(mod.latestFile.date)
+                timestamps[mod.mirror.name] = moment(mod.latestFile.date).startOf('day')
             }
             let removedMirrors = compareTimestamps(timestamps)
 

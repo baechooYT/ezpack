@@ -7,16 +7,16 @@
     "typescript": "^5.2.2"
   },
   "bin": {
-    "ezpack": "/build/index.js"
+    "ezpack": "./build/ezpack.js"
   },
   "devDependencies": {
     "@types/archiver": "^5.3.3",
     "@types/node": "^20.8.0"
   },
   "name": "mc-ezpack",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Easiest way to pack minecraft modpack",
-  "main": "./build/index.js",
+  "main": "./build/ezpack.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

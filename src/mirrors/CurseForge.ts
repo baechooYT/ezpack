@@ -29,14 +29,21 @@ module.exports = class CurseForge extends BaseMirror {
 
             const latestFile = new BaseModFile()
 
+            let latestFileInfo = Mod.latestFiles[0]
+            for (let FileInfo of Mod.latestFiles){
+                if (moment(FileInfo.fileDate).isAfter(moment(latestFileInfo.fileDate))){
+                    latestFileInfo = FileInfo
+                }
+            }
+
             for (let hash of Mod.latestFiles[0].hashes) {
                 if (hash.algo == 1){
                     latestFile.hashes.sha1 = hash.value
                 }
             }
-            latestFile.date = moment(Mod.latestFiles[0].fileDate)
-            latestFile.downloadURL = Mod.latestFiles[0].downloadUrl
-            latestFile.id = Mod.latestFiles[0].id
+            latestFile.date = moment(latestFileInfo.fileDate)
+            latestFile.downloadURL = latestFileInfo.downloadUrl
+            latestFile.id = latestFileInfo.id
 
             return {
                 slug: slug,
