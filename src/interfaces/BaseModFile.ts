@@ -7,4 +7,5 @@ export class BaseModFile {
     }
     public date: Moment = moment()
     public downloadURL: string = ""
+    public id: string = ""
 }

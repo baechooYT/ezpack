@@ -48,6 +48,7 @@ module.exports = class CurseForge extends BaseMirror_1.BaseMirror {
                 }
                 latestFile.date = (0, moment_1.default)(Mod.latestFiles[0].fileDate);
                 latestFile.downloadURL = Mod.latestFiles[0].downloadUrl;
+                latestFile.id = Mod.latestFiles[0].id;
                 return {
                     slug: slug,
                     mirror: this,
@@ -66,11 +67,23 @@ module.exports = class CurseForge extends BaseMirror_1.BaseMirror {
             let modLoaders = {
                 "fabric": 4
             };
-            const fileInfo = (yield axios_1.default.get(`https://api.curseforge.com/v1/mods/${modId}/files?gameVersion=${game_version}&modLoaderType=${modLoaders[modLoader]}`, {
+            const files = (yield axios_1.default.get(`https://api.curseforge.com/v1/mods/${modId}/files?modLoaderType=${modLoaders[modLoader]}`, {
                 headers: {
                     'x-api-key': this.apiKey
                 }
             })).data.data;
+            let fileInfo = files[0];
+            for (let file of files) {
+                const baseVersion = game_version.split(".")[0] + '.' + game_version.split(".")[1];
+                if (file.gameVersions.includes(baseVersion)) {
+                    fileInfo = file;
+                }
+            }
+            for (let file of files) {
+                if (file.gameVersions.includes(game_version)) {
+                    fileInfo = file;
+                }
+            }
             const modFile = new BaseModFile_1.BaseModFile();
             modFile.date = (0, moment_1.default)(fileInfo.fileDate);
             for (let hash of fileInfo.hashes) {
@@ -79,6 +92,7 @@ module.exports = class CurseForge extends BaseMirror_1.BaseMirror {
                 }
             }
             modFile.downloadURL = fileInfo.downloadUrl;
+            modFile.id = fileInfo.id;
             return modFile;
         });
     }
@@ -118,7 +132,7 @@ module.exports = class CurseForge extends BaseMirror_1.BaseMirror {
                     modList += `<li><a href="https://www.curseforge.com/minecraft/mc-mods/${mirrorModInfo.slug}">${mirrorModInfo.name} (by ${mirrorModInfo.authors[0].name})</a></li>\n`;
                     cfManifest.files.push({
                         "projectID": modInfo.id,
-                        "fileID": mirrorModInfo.latestFiles[0].id,
+                        "fileID": this.getModFileByGameVersion(mcVersion, modInfo.id, 'fabric'),
                         "required": true,
                     });
                 }
