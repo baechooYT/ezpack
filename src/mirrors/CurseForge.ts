@@ -6,7 +6,6 @@ import moment from "moment";
 import {getLatestVersion} from "../utils/fabric";
 import fs from "fs";
 import archiver from 'archiver'
-import {json} from "stream/consumers";
 
 class CurseForgeMod extends BaseMod {}
 
@@ -37,6 +36,7 @@ module.exports = class CurseForge extends BaseMirror {
             }
             latestFile.date = moment(Mod.latestFiles[0].fileDate)
             latestFile.downloadURL = Mod.latestFiles[0].downloadUrl
+            latestFile.id = Mod.latestFiles[0].id
 
             return {
                 slug: slug,
@@ -56,11 +56,25 @@ module.exports = class CurseForge extends BaseMirror {
             "fabric": 4
         }
 
-        const fileInfo = (await axios.get(`https://api.curseforge.com/v1/mods/${modId}/files?gameVersion=${game_version}&modLoaderType=${modLoaders[modLoader]}`, {
+        const files = (await axios.get(`https://api.curseforge.com/v1/mods/${modId}/files?modLoaderType=${modLoaders[modLoader]}`, {
             headers: {
                 'x-api-key': this.apiKey
             }
         })).data.data
+
+        let fileInfo = files[0]
+        for (let file of files){
+            const baseVersion = game_version.split(".")[0] + '.' + game_version.split(".")[1]
+            if(file.gameVersions.includes(baseVersion)){
+                fileInfo = file
+            }
+        }
+
+        for (let file of files){
+            if(file.gameVersions.includes(game_version)){
+                fileInfo = file
+            }
+        }
 
         const modFile = new BaseModFile()
         modFile.date = moment(fileInfo.fileDate)
@@ -70,6 +84,7 @@ module.exports = class CurseForge extends BaseMirror {
             }
         }
         modFile.downloadURL = fileInfo.downloadUrl
+        modFile.id = fileInfo.id
 
         return modFile
     }
@@ -116,7 +131,7 @@ module.exports = class CurseForge extends BaseMirror {
 
                 cfManifest.files.push({
                     "projectID": modInfo.id,
-                    "fileID": mirrorModInfo.latestFiles[0].id,
+                    "fileID": this.getModFileByGameVersion(mcVersion, modInfo.id, 'fabric'),
                     "required": true,
                 } as never)
             }else{
