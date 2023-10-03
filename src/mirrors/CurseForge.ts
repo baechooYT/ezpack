@@ -131,7 +131,7 @@ module.exports = class CurseForge extends BaseMirror {
 
                 cfManifest.files.push({
                     "projectID": modInfo.id,
-                    "fileID": this.getModFileByGameVersion(mcVersion, modInfo.id, 'fabric'),
+                    "fileID": (await this.getModFileByGameVersion(mcVersion, modInfo.id, 'fabric')).id,
                     "required": true,
                 } as never)
             }else{
