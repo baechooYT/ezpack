@@ -2,6 +2,7 @@ import {BaseMirror} from "../classes/BaseMirror";
 
 const readline = require('readline');
 import fs from 'fs'
+import path from "path";
 
 function input(query: string) {
     const rl = readline.createInterface({
@@ -23,7 +24,7 @@ module.exports = {
     action: async function (program: any){
 
         const startTime = Date.now()
-        const modpackFormatClass = require(path.dirname(__dirname)+"//modpackFormats/" + program.args[1])
+        const modpackFormatClass = require(path.dirname(__dirname)+"/modpackFormats/" + program.args[1])
         const modpackFormat = new modpackFormatClass()
 
         if (!fs.existsSync("./exports")){

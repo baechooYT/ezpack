@@ -16,6 +16,7 @@ const axios_1 = __importDefault(require("axios"));
 const readline_1 = __importDefault(require("readline"));
 const fs_1 = __importDefault(require("fs"));
 const moment_1 = __importDefault(require("moment"));
+const path = require('path');
 function input(query) {
     const rl = readline_1.default.createInterface({
         input: process.stdin,
@@ -62,9 +63,9 @@ module.exports = {
             // pushes mirrors in to mirrors array
             const mirrors = [];
             const mods = [];
-            yield fs_1.default.readdirSync(__dirname + "/../mirrors").forEach(function (f) {
+            yield fs_1.default.readdirSync(path.dirname(__dirname) + "/mirrors").forEach(function (f) {
                 return __awaiter(this, void 0, void 0, function* () {
-                    const mirror = require(__dirname + "/../mirrors/" + f);
+                    const mirror = require(path.dirname(__dirname) + "/mirrors/" + f);
                     mirrors.push(new mirror());
                 });
             });
