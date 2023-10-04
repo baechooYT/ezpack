@@ -65,7 +65,7 @@ module.exports = {
             const mods = [];
             yield fs_1.default.readdirSync(path.dirname(__dirname) + "/mirrors").forEach(function (f) {
                 return __awaiter(this, void 0, void 0, function* () {
-                    const mirror = require(path.dirname(__dirname) + "/mirrors/" + f);
+                    const mirror = require(path.dirname(__dirname) + "/mirrors/" + f + '.js');
                     mirrors.push(new mirror());
                 });
             });

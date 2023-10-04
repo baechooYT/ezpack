@@ -17,7 +17,7 @@ module.exports = class ModsZipFormat implements BaseModpackFormat {
         for (let mod of mods){
             let modUrl: string = ""
             for (let [key, value] of Object.entries(mod.mirrors)){
-                const mirrorFile = require(pathM.dirname(__dirname)+"/mirrors/" + key)
+                const mirrorFile = require(pathM.dirname(__dirname)+"/mirrors/" + key + ".js")
                 const mirror = new mirrorFile()
                 const modFile = await mirror.getModFileByGameVersion(mcVersion, value.id, manifest.modloader)
 

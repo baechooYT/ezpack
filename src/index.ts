@@ -7,7 +7,7 @@ const fs = require("fs")
 program
     .name("ezpack")
     .description("Easiest way to pack a minecraft modpacks")
-    .version("1.0.8")
+    .version("1.0.9")
 
 fs.readdirSync(__dirname+"/commands/").forEach((file: string) => {
     const command = require(__dirname+"/commands/"+file)

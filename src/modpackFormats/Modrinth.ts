@@ -51,7 +51,7 @@ module.exports = class ModrinthFormat implements BaseModpackFormat {
                     "path": `mods/${decodeURIComponent(modVersion.files[0].url.split('/').pop())}`
                 } as never)
             }else{
-                const mirrorClass: any = require(pathM.dirname(__dirname)+"/mirrors/" + Object.keys(mod.mirrors)[0])
+                const mirrorClass: any = require(pathM.dirname(__dirname)+"/mirrors/" + Object.keys(mod.mirrors)[0] + ".js")
                 const mirror: BaseMirror = new mirrorClass()
                 const modFile = await mirror.getModFileByGameVersion(mcVersion, Object.values(mod.mirrors)[0].id, 'fabric')
 
