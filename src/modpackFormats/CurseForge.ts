@@ -5,12 +5,14 @@ import fs from "fs";
 import archiver from "archiver";
 import axios from "axios";
 
+const pathM = require('path')
+
 module.exports = class CurseForgeFormat implements BaseModpackFormat {
     public name: string = "CurseForge"
     async convertFromEzpack(manifest: {[p: string]: any}, mods: {[p: string]: {[p: string]: any}}[], path: string, mcVersion: string): Promise<string>{
         const filePath = `${path}/${this.name}-${mcVersion}.zip`
 
-        const CurseForgeMirrorFile = require(__dirname+"/../mirrors/CurseForge")
+        const CurseForgeMirrorFile = require(pathM.dirname(__dirname)+"/mirrors/CurseForge")
         const CurseForgeMirror = new CurseForgeMirrorFile()
 
         let modList = "<ul>\n"
@@ -52,7 +54,7 @@ module.exports = class CurseForgeFormat implements BaseModpackFormat {
                     "required": true,
                 } as never)
             }else{
-                const mirrorClass: any = require(__dirname + "/../mirrors/" + Object.keys(mod.mirrors)[0])
+                const mirrorClass: any = require(pathM.dirname(__dirname)+"/mirrors/" + Object.keys(mod.mirrors)[0])
                 const mirror: BaseMirror = new mirrorClass()
                 const modFile = await mirror.getModFileByGameVersion(mcVersion, Object.values(mod.mirrors)[0].id, 'fabric')
 

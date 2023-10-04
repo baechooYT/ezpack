@@ -5,6 +5,8 @@ import fs from "fs";
 import archiver from "archiver";
 import axios from "axios";
 
+const pathM = require('path')
+
 module.exports = class ModsZipFormat implements BaseModpackFormat {
     public name: string = "ModsZip"
     async convertFromEzpack(manifest: {[p: string]: any}, mods: {[p: string]: {[p: string]: any}}[], path: string, mcVersion: string): Promise<string>{
@@ -15,7 +17,7 @@ module.exports = class ModsZipFormat implements BaseModpackFormat {
         for (let mod of mods){
             let modUrl: string = ""
             for (let [key, value] of Object.entries(mod.mirrors)){
-                const mirrorFile = require(__dirname + "/../mirrors/" + key)
+                const mirrorFile = require(pathM.dirname(__dirname)+"/mirrors/" + key)
                 const mirror = new mirrorFile()
                 const modFile = await mirror.getModFileByGameVersion(mcVersion, value.id, manifest.modloader)
 

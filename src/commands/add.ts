@@ -5,6 +5,8 @@ import {BaseMirror} from "../classes/BaseMirror";
 import {BaseMod} from "../interfaces/BaseMod";
 import moment from "moment";
 
+const path = require('path')
+
 function input(query: string) {
     const rl = readline.createInterface({
         input: process.stdin,
@@ -57,8 +59,8 @@ module.exports = {
         // pushes mirrors in to mirrors array
         const mirrors: BaseMirror[] = []
         const mods: BaseMod[] = []
-        await fs.readdirSync(__dirname+"/../mirrors").forEach(async function (f){
-            const mirror = require(__dirname + "/../mirrors/" + f)
+        await fs.readdirSync(path.dirname(__dirname)+"/mirrors").forEach(async function (f){
+            const mirror = require(path.dirname(__dirname)+"/mirrors/" + f)
 
             mirrors.push(new mirror())
         })

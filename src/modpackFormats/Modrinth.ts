@@ -5,11 +5,13 @@ import fs from "fs";
 import archiver from "archiver";
 import axios from "axios";
 
+const pathM = require('path')
+
 module.exports = class ModrinthFormat implements BaseModpackFormat {
     public name: string = "Modrinth"
     async convertFromEzpack(manifest: {[p: string]: any}, mods: {[p: string]: {[p: string]: any}}[], path: string, mcVersion: string): Promise<string>{
         const filePath = `${path}/${this.name}-${mcVersion}.mrpack`
-        const modrinthMirrorFile = require(__dirname+"/../mirrors/Modrinth")
+        const modrinthMirrorFile = require(pathM.dirname(__dirname)+"/mirrors/Modrinth")
         const modrinthMirror = new modrinthMirrorFile()
 
         let modLoaders: {[p: string]: string} = {
@@ -49,7 +51,7 @@ module.exports = class ModrinthFormat implements BaseModpackFormat {
                     "path": `mods/${decodeURIComponent(modVersion.files[0].url.split('/').pop())}`
                 } as never)
             }else{
-                const mirrorClass: any = require(__dirname + "/../mirrors/" + Object.keys(mod.mirrors)[0])
+                const mirrorClass: any = require(pathM.dirname(__dirname)+"/mirrors/" + Object.keys(mod.mirrors)[0])
                 const mirror: BaseMirror = new mirrorClass()
                 const modFile = await mirror.getModFileByGameVersion(mcVersion, Object.values(mod.mirrors)[0].id, 'fabric')
 
