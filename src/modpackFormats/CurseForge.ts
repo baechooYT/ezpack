@@ -10,7 +10,7 @@ module.exports = class CurseForgeFormat implements BaseModpackFormat {
     async convertFromEzpack(manifest: {[p: string]: any}, mods: {[p: string]: {[p: string]: any}}[], path: string, mcVersion: string): Promise<string>{
         const filePath = `${path}/${this.name}-${mcVersion}.zip`
 
-        const CurseForgeMirrorFile = require(__dirname+"/../mirrors/Modrinth")
+        const CurseForgeMirrorFile = require(__dirname+"/../mirrors/CurseForge")
         const CurseForgeMirror = new CurseForgeMirrorFile()
 
         let modList = "<ul>\n"
