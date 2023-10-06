@@ -1,6 +1,6 @@
 import {BaseMirror} from "../classes/BaseMirror";
 import {BaseMod} from "../interfaces/BaseMod";
-import axios from "axios";
+import axios, {AxiosResponse} from "axios";
 import {BaseModFile} from "../interfaces/BaseModFile";
 import moment from "moment/moment";
 module.exports = class Modrinth extends BaseMirror {
@@ -36,7 +36,8 @@ module.exports = class Modrinth extends BaseMirror {
     }
 
     async getVersionByGameVersion(game_version: string, modId: string, modLoader: string){
-        const versions: { [p: string]: any }[] = (await axios.get(`https://api.modrinth.com/v2/project/${modId}/version`, {})).data
+        const versionsRes: AxiosResponse = await axios.get(`https://api.modrinth.com/v2/project/${modId}/version`, {})
+        const versions = versionsRes.data.reverse()
 
         let matchVersion = versions[0]
         for (let version of versions){

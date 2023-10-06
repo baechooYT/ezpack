@@ -3,11 +3,6 @@ import {BaseMod} from "../interfaces/BaseMod";
 import axios from "axios";
 import {BaseModFile} from "../interfaces/BaseModFile";
 import moment from "moment";
-import {getLatestVersion} from "../utils/fabric";
-import fs from "fs";
-import archiver from 'archiver'
-
-class CurseForgeMod extends BaseMod {}
 
 module.exports = class CurseForge extends BaseMirror {
     public name = "CurseForge"
