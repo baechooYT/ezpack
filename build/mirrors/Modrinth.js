@@ -50,7 +50,8 @@ module.exports = class Modrinth extends BaseMirror_1.BaseMirror {
     }
     getVersionByGameVersion(game_version, modId, modLoader) {
         return __awaiter(this, void 0, void 0, function* () {
-            const versions = (yield axios_1.default.get(`https://api.modrinth.com/v2/project/${modId}/version`, {})).data;
+            const versionsRes = yield axios_1.default.get(`https://api.modrinth.com/v2/project/${modId}/version`, {});
+            const versions = versionsRes.data.reverse();
             let matchVersion = versions[0];
             for (let version of versions) {
                 const baseVersion = game_version.split(".")[0] + '.' + game_version.split(".")[1];
@@ -68,19 +69,7 @@ module.exports = class Modrinth extends BaseMirror_1.BaseMirror {
     }
     getModFileByGameVersion(game_version, modId, modLoader) {
         return __awaiter(this, void 0, void 0, function* () {
-            const versions = (yield axios_1.default.get(`https://api.modrinth.com/v2/project/${modId}/version`, {})).data;
-            let matchVersion = versions[0];
-            for (let version of versions) {
-                const baseVersion = game_version.split(".")[0] + '.' + game_version.split(".")[1];
-                if (version.game_versions.includes(baseVersion) && version.loaders.includes(modLoader)) {
-                    matchVersion = version;
-                }
-            }
-            for (let version of versions) {
-                if (version.game_versions.includes(game_version) && version.loaders.includes(modLoader)) {
-                    matchVersion = version;
-                }
-            }
+            const matchVersion = yield this.getVersionByGameVersion(game_version, modId, modLoader);
             const modFile = new BaseModFile_1.BaseModFile();
             modFile.date = (0, moment_1.default)(matchVersion.date_published);
             modFile.hashes.sha1 = matchVersion.files[0].hashes.sha1;

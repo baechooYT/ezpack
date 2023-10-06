@@ -13,12 +13,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const BaseMirror_1 = require("../classes/BaseMirror");
-const BaseMod_1 = require("../interfaces/BaseMod");
 const axios_1 = __importDefault(require("axios"));
 const BaseModFile_1 = require("../interfaces/BaseModFile");
 const moment_1 = __importDefault(require("moment"));
-class CurseForgeMod extends BaseMod_1.BaseMod {
-}
 module.exports = class CurseForge extends BaseMirror_1.BaseMirror {
     constructor() {
         super(...arguments);

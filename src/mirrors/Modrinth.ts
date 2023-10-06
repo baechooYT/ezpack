@@ -57,21 +57,7 @@ module.exports = class Modrinth extends BaseMirror {
     }
 
     async getModFileByGameVersion(game_version: string, modId: string, modLoader: string){
-        const versions: { [p: string]: any }[] = (await axios.get(`https://api.modrinth.com/v2/project/${modId}/version`, {})).data
-
-        let matchVersion = versions[0]
-        for (let version of versions){
-            const baseVersion = game_version.split(".")[0] + '.' + game_version.split(".")[1]
-            if (version.game_versions.includes(baseVersion) && version.loaders.includes(modLoader)){
-                matchVersion = version
-            }
-        }
-
-        for (let version of versions){
-            if (version.game_versions.includes(game_version) && version.loaders.includes(modLoader)){
-                matchVersion = version
-            }
-        }
+        const matchVersion = await this.getVersionByGameVersion(game_version, modId, modLoader)
 
         const modFile = new BaseModFile()
         modFile.date = moment(matchVersion.date_published)
