@@ -40,7 +40,7 @@ module.exports = class ModrinthFormat implements BaseModpackFormat {
             const modInfo = mod.mirrors[this.name]
 
             if (modInfo){
-                const modVersion = await modrinthMirror.getVersionByGameVersion(mcVersion, modInfo.id, manifest.modLoader)
+                const modVersion = await modrinthMirror.getVersionByGameVersion(mcVersion, modInfo.id, manifest.modloader)
 
                 modrinthIndex.files.push({
                     "downloads": [

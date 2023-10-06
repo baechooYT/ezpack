@@ -50,13 +50,13 @@ module.exports = class CurseForgeFormat implements BaseModpackFormat {
 
                 cfManifest.files.push({
                     "projectID": modInfo.id,
-                    "fileID": (await CurseForgeMirror.getModFileByGameVersion(mcVersion, modInfo.id, 'fabric')).id,
+                    "fileID": (await CurseForgeMirror.getModFileByGameVersion(mcVersion, modInfo.id, manifest.modloader)).id,
                     "required": true,
                 } as never)
             }else{
                 const mirrorClass: any = require(pathM.dirname(__dirname)+"/mirrors/" + Object.keys(mod.mirrors)[0] + ".js")
                 const mirror: BaseMirror = new mirrorClass()
-                const modFile = await mirror.getModFileByGameVersion(mcVersion, Object.values(mod.mirrors)[0].id, 'fabric')
+                const modFile = await mirror.getModFileByGameVersion(mcVersion, Object.values(mod.mirrors)[0].id, manifest.modloader)
 
                 if (!modFile){
                     continue;
