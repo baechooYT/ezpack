@@ -58,25 +58,24 @@ module.exports = class CurseForge extends BaseMirror {
             "fabric": 4
         }
 
-        const files = (await axios.get(`https://api.curseforge.com/v1/mods/${modId}/files?modLoaderType=${modLoaders[modLoader]}`, {
+        const filesData = (await axios.get(`https://api.curseforge.com/v1/mods/${modId}/files?modLoaderType=${modLoaders[modLoader]}`, {
             headers: {
                 'x-api-key': this.apiKey
             }
         })).data.data
+        const files = filesData.reverse()
 
         let fileInfo = files[0]
         for (let file of files){
             const baseVersion = game_version.split(".")[0] + '.' + game_version.split(".")[1]
             if(file.gameVersions.includes(baseVersion)){
                 fileInfo = file
-                break
             }
         }
 
         for (let file of files){
             if(file.gameVersions.includes(game_version)){
                 fileInfo = file
-                break
             }
         }
 

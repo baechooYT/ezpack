@@ -44,14 +44,12 @@ module.exports = class Modrinth extends BaseMirror {
             const baseVersion = game_version.split(".")[0] + '.' + game_version.split(".")[1]
             if (version.game_versions.includes(baseVersion) && version.loaders.includes(modLoader)){
                 matchVersion = version
-                break
             }
         }
 
         for (let version of versions){
             if (version.game_versions.includes(game_version) && version.loaders.includes(modLoader)){
                 matchVersion = version
-                break
             }
         }
 
