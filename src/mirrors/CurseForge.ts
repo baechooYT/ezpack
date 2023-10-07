@@ -69,12 +69,14 @@ module.exports = class CurseForge extends BaseMirror {
             const baseVersion = game_version.split(".")[0] + '.' + game_version.split(".")[1]
             if(file.gameVersions.includes(baseVersion)){
                 fileInfo = file
+                break
             }
         }
 
         for (let file of files){
             if(file.gameVersions.includes(game_version)){
                 fileInfo = file
+                break
             }
         }
 
