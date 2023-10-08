@@ -54,7 +54,7 @@ module.exports = class CurseForgeFormat implements BaseModpackFormat {
                     "required": true,
                 } as never)
             }else{
-                const mirrorClass: any = require(pathM.dirname(__dirname)+"/mirrors/" + Object.keys(mod.mirrors)[0] + ".js")
+                const mirrorClass: any = require(pathM.dirname(__dirname)+"/mirrors/" + Object.keys(mod.mirrors)[0])
                 const mirror: BaseMirror = new mirrorClass()
                 const modFile = await mirror.getModFileByGameVersion(mcVersion, Object.values(mod.mirrors)[0].id, manifest.modloader)
 
@@ -83,7 +83,9 @@ module.exports = class CurseForgeFormat implements BaseModpackFormat {
         archive.append(JSON.stringify(cfManifest), { name: 'manifest.json' });
 
         for (let modUrl of overrideMods){
-            archive.append((await axios.get(modUrl)).data, { name: 'overrides/mods/'+decodeURIComponent(modUrl.split('/').pop() as string) })
+            archive.append((await axios.get(modUrl, {
+                responseType: "stream"
+            })).data, { name: 'overrides/mods/'+decodeURIComponent(modUrl.split('/').pop() as string) })
         }
 
 

@@ -17,7 +17,7 @@ module.exports = class ModsZipFormat implements BaseModpackFormat {
         for (let mod of mods){
             let modUrl: string = ""
             for (let [key, value] of Object.entries(mod.mirrors)){
-                const mirrorFile = require(pathM.dirname(__dirname)+"/mirrors/" + key + ".js")
+                const mirrorFile = require(pathM.dirname(__dirname)+"/mirrors/" + key)
                 const mirror = new mirrorFile()
                 const modFile = await mirror.getModFileByGameVersion(mcVersion, value.id, manifest.modloader)
 
@@ -43,7 +43,9 @@ module.exports = class ModsZipFormat implements BaseModpackFormat {
         archive.pipe(output);
 
         for (let modUrl of modFileUrls){
-            archive.append((await axios.get(modUrl)).data, { name: decodeURIComponent(modUrl.split('/').pop() as string) })
+            archive.append((await axios.get(modUrl, {
+                responseType: "stream"
+            })).data, { name: decodeURIComponent(modUrl.split('/').pop() as string) })
         }
 
         await archive.finalize()

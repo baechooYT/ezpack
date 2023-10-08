@@ -51,7 +51,7 @@ module.exports = class ModrinthFormat implements BaseModpackFormat {
                     "path": `mods/${decodeURIComponent(modVersion.files[0].url.split('/').pop())}`
                 } as never)
             }else{
-                const mirrorClass: any = require(pathM.dirname(__dirname)+"/mirrors/" + Object.keys(mod.mirrors)[0] + ".js")
+                const mirrorClass: any = require(pathM.dirname(__dirname)+"/mirrors/" + Object.keys(mod.mirrors)[0])
                 const mirror: BaseMirror = new mirrorClass()
                 const modFile = await mirror.getModFileByGameVersion(mcVersion, Object.values(mod.mirrors)[0].id, 'fabric')
 
@@ -78,7 +78,9 @@ module.exports = class ModrinthFormat implements BaseModpackFormat {
         archive.append(JSON.stringify(modrinthIndex), { name: 'modrinth.index.json' });
 
         for (let modUrl of overrideMods){
-            archive.append((await axios.get(modUrl)).data, { name: 'overrides/mods/'+decodeURIComponent(modUrl.split('/').pop() as string) })
+            archive.append((await axios.get(modUrl, {
+                responseType: "stream"
+            })).data, { name: 'overrides/mods/'+decodeURIComponent(modUrl.split('/').pop() as string) })
         }
 
         await archive.finalize()

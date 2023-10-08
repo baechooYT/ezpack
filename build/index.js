@@ -15,7 +15,7 @@ const fs = require("fs");
 program
     .name("ezpack")
     .description("Easiest way to pack a minecraft modpacks")
-    .version("1.1.2");
+    .version("1.1.5");
 fs.readdirSync(__dirname + "/commands/").forEach((file) => {
     const command = require(__dirname + "/commands/" + file);
     let newCommand = program.command(command.name)

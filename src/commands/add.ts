@@ -60,7 +60,7 @@ module.exports = {
         const mirrors: BaseMirror[] = []
         const mods: BaseMod[] = []
         await fs.readdirSync(path.dirname(__dirname)+"/mirrors").forEach(async function (f){
-            const mirror = require(path.dirname(__dirname)+"/mirrors/" + f + '.js')
+            const mirror = require(path.dirname(__dirname)+"/mirrors/" + f)
 
             mirrors.push(new mirror())
         })
