@@ -31,7 +31,8 @@ module.exports = class CurseForgeFormat implements BaseModpackFormat {
             "name": manifest.name,
             "version": manifest.version,
             "author": manifest.author,
-            "files": []
+            "files": [],
+            "overrides": "overrides"
         }
 
         let overrideMods = []
