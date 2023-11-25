@@ -40,12 +40,12 @@ module.exports = class Modrinth extends BaseMirror {
         const versions = versionsRes.data.reverse()
 
         let matchVersion = versions[0]
-        for (let version of versions){
-            const baseVersion = game_version.split(".")[0] + '.' + game_version.split(".")[1]
-            if (version.game_versions.includes(baseVersion) && version.loaders.includes(modLoader)){
-                matchVersion = version
-            }
-        }
+        // for (let version of versions){
+        //     const baseVersion = game_version.split(".")[0] + '.' + game_version.split(".")[1]
+        //     if (version.game_versions.includes(baseVersion) && version.loaders.includes(modLoader)){
+        //         matchVersion = version
+        //     }
+        // }
 
         for (let version of versions){
             if (version.game_versions.includes(game_version) && version.loaders.includes(modLoader)){
