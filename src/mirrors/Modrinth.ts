@@ -39,7 +39,7 @@ module.exports = class Modrinth extends BaseMirror {
         const versionsRes: AxiosResponse = await axios.get(`https://api.modrinth.com/v2/project/${modId}/version`, {})
         const versions = versionsRes.data.reverse()
 
-        let matchVersion = versions[0]
+        let matchVersion
         // for (let version of versions){
         //     const baseVersion = game_version.split(".")[0] + '.' + game_version.split(".")[1]
         //     if (version.game_versions.includes(baseVersion) && version.loaders.includes(modLoader)){
@@ -52,6 +52,8 @@ module.exports = class Modrinth extends BaseMirror {
                 matchVersion = version
             }
         }
+
+        if (!matchVersion) return
 
         return matchVersion
     }

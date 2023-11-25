@@ -49,9 +49,13 @@ module.exports = class CurseForgeFormat implements BaseModpackFormat {
 
                 modList+=`<li><a href="https://www.curseforge.com/minecraft/mc-mods/${mirrorModInfo.slug}">${mirrorModInfo.name} (by ${mirrorModInfo.authors[0].name})</a></li>\n`
 
+                let modFile = await CurseForgeMirror.getModFileByGameVersion(mcVersion, modInfo.id, manifest.modloader)
+
+                if (!modFile) continue
+
                 cfManifest.files.push({
                     "projectID": modInfo.id,
-                    "fileID": (await CurseForgeMirror.getModFileByGameVersion(mcVersion, modInfo.id, manifest.modloader)).id,
+                    "fileID": (modFile).id,
                     "required": true,
                 } as never)
             }else{

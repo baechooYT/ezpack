@@ -65,7 +65,7 @@ module.exports = class CurseForge extends BaseMirror {
         })).data.data
         const files = filesData.reverse()
 
-        let fileInfo = files[0]
+        let fileInfo
         // for (let file of files){
         //     const baseVersion = game_version.split(".")[0] + '.' + game_version.split(".")[1]
         //     if(file.gameVersions.includes(baseVersion)){
@@ -78,6 +78,8 @@ module.exports = class CurseForge extends BaseMirror {
                 fileInfo = file
             }
         }
+
+        if (!fileInfo) return
 
         const modFile = new BaseModFile()
         modFile.date = moment(fileInfo.fileDate)
