@@ -52,18 +52,20 @@ module.exports = class Modrinth extends BaseMirror_1.BaseMirror {
         return __awaiter(this, void 0, void 0, function* () {
             const versionsRes = yield axios_1.default.get(`https://api.modrinth.com/v2/project/${modId}/version`, {});
             const versions = versionsRes.data.reverse();
-            let matchVersion = versions[0];
-            for (let version of versions) {
-                const baseVersion = game_version.split(".")[0] + '.' + game_version.split(".")[1];
-                if (version.game_versions.includes(baseVersion) && version.loaders.includes(modLoader)) {
-                    matchVersion = version;
-                }
-            }
+            let matchVersion;
+            // for (let version of versions){
+            //     const baseVersion = game_version.split(".")[0] + '.' + game_version.split(".")[1]
+            //     if (version.game_versions.includes(baseVersion) && version.loaders.includes(modLoader)){
+            //         matchVersion = version
+            //     }
+            // }
             for (let version of versions) {
                 if (version.game_versions.includes(game_version) && version.loaders.includes(modLoader)) {
                     matchVersion = version;
                 }
             }
+            if (!matchVersion)
+                return;
             return matchVersion;
         });
     }

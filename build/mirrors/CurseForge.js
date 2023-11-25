@@ -73,18 +73,20 @@ module.exports = class CurseForge extends BaseMirror_1.BaseMirror {
                 }
             })).data.data;
             const files = filesData.reverse();
-            let fileInfo = files[0];
-            for (let file of files) {
-                const baseVersion = game_version.split(".")[0] + '.' + game_version.split(".")[1];
-                if (file.gameVersions.includes(baseVersion)) {
-                    fileInfo = file;
-                }
-            }
+            let fileInfo;
+            // for (let file of files){
+            //     const baseVersion = game_version.split(".")[0] + '.' + game_version.split(".")[1]
+            //     if(file.gameVersions.includes(baseVersion)){
+            //         fileInfo = file
+            //     }
+            // }
             for (let file of files) {
                 if (file.gameVersions.includes(game_version)) {
                     fileInfo = file;
                 }
             }
+            if (!fileInfo)
+                return;
             const modFile = new BaseModFile_1.BaseModFile();
             modFile.date = (0, moment_1.default)(fileInfo.fileDate);
             for (let hash of fileInfo.hashes) {
